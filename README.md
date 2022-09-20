@@ -1,4 +1,4 @@
-# my_city
+# my-game-library
 
 A new Flutter project.
 
