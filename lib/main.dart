@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'maps.dart';
-import 'problems_list.dart';
+import 'package:my_city/src/screen/maps.dart';
+import 'package:my_city/src/screen/my_library.dart';
+import 'src/screen/maps.dart';
+import 'src/screen/my_library.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,11 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'app_title',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'app_title'),
     );
   }
 }
@@ -31,17 +34,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -50,20 +47,20 @@ class _MyHomePageState extends State<MyHomePage> {
               tabs: [
                 Tab(
                   icon: Icon(Icons.map),
-                  text: 'Maps',
+                  text: 'maps_tab',
                 ),
                 Tab(
-                  icon: Icon(Icons.report_problem),
-                  text: 'Problems',
+                  icon: Icon(Icons.list_alt),
+                  text: 'My Library',
                 )
               ],
             ),
-            title: const Text('My City'),
+            title: const Text('Title_home'),
           ),
-          body: const TabBarView (
+          body: TabBarView (
             children: [
-              Maps(),
-              ProblemsList()
+              const Maps(),
+              MyLibrary()
             ],
           ),
         ),
