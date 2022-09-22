@@ -16,12 +16,22 @@ class GameDetails extends StatelessWidget {
             title: Text(game.title),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(0),
             child: Column(
               children: <Widget>[
-                Text('Description: ' + game.description),
-                Text('Release: ' + game.year.toString()),
-                Text('Rating: ' + game.rating.toString())
+                Image.network('https://wallpaper.dog/large/20492255.jpg'),
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text('Description: ${game.description}'),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text('Release: ${game.year}')
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text('Rating: ${game.rating}/10'),
+                )
               ],
             ),
           )

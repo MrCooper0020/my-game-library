@@ -36,7 +36,7 @@ class Register extends StatelessWidget {
                       controller: _titleController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'title_input_empty_warning';
+                          return 'Please, insert a game title';
                         }
                         return null;
                       },
@@ -49,7 +49,7 @@ class Register extends StatelessWidget {
                       controller: _descriptionController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'description_input_empty_warning';
+                          return 'Please, insert a game description';
                         }
                         return null;
                       },
@@ -62,7 +62,9 @@ class Register extends StatelessWidget {
                       controller: _ratingController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'rating_input_empty_warning';
+                          return 'Please, insert a number';
+                        } else if (int.parse(value) > 0 && int.parse(value) <= 10 ) {
+                          return 'Rating have to be minimum 1 and maximum 10';
                         }
                         return null;
                       },
@@ -74,8 +76,8 @@ class Register extends StatelessWidget {
                       ),
                       controller: _yearController,
                       validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'year_input_empty_warning';
+                        if (value!.isEmpty || int.parse(value) <= 1800 || value.length != 4) {
+                          return 'Please, insert a valid year';
                         }
                         return null;
                       },

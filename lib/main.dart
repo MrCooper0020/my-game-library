@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
-            title: const Text('Title_home'),
+            title: const Text('My game library'),
           ),
           body: TabBarView (
             children: [
