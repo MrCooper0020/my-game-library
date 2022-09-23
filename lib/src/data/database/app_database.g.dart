@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Game` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `rating` INTEGER NOT NULL, `year` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Game` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `rating` INTEGER NOT NULL, `year` INTEGER NOT NULL, `image` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,7 +112,8 @@ class _$GameDao extends GameDao {
                   'title': item.title,
                   'description': item.description,
                   'rating': item.rating,
-                  'year': item.year
+                  'year': item.year,
+                  'image': item.image
                 }),
         _gameDeletionAdapter = DeletionAdapter(
             database,
@@ -123,7 +124,8 @@ class _$GameDao extends GameDao {
                   'title': item.title,
                   'description': item.description,
                   'rating': item.rating,
-                  'year': item.year
+                  'year': item.year,
+                  'image': item.image
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -144,6 +146,7 @@ class _$GameDao extends GameDao {
             row['description'] as String,
             row['rating'] as int,
             row['year'] as int,
+            row['image'] as String,
             id: row['id'] as int?));
   }
 

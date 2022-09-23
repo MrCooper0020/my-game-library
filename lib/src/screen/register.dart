@@ -10,6 +10,7 @@ class Register extends StatelessWidget {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ratingController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _imageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class Register extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please, insert a number';
-                        } else if (int.parse(value) > 0 && int.parse(value) <= 10 ) {
+                        } else if (int.parse(value) < 0 && int.parse(value) > 10 ) {
                           return 'Rating have to be minimum 1 and maximum 10';
                         }
                         return null;
@@ -82,6 +83,19 @@ class Register extends StatelessWidget {
                         return null;
                       },
                     ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                          hintText: "Image link",
+                          labelText: "Image link"
+                      ),
+                      controller: _imageController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please, insert a valid image link';
+                        }
+                        return null;
+                      },
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: RaisedButton(
@@ -91,7 +105,8 @@ class Register extends StatelessWidget {
                                 _titleController.text,
                                 _descriptionController.text,
                                 int.parse(_ratingController.text),
-                                int.parse(_yearController.text)
+                                int.parse(_yearController.text),
+                                _imageController.text
                             );
                             Navigator.pop(context, game);
                           }
