@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_city/src/screen/maps.dart';
-import 'package:my_city/src/screen/my_library.dart';
-import 'src/screen/maps.dart';
-import 'src/screen/my_library.dart';
+import 'package:my_city/src/screen/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,51 +17,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'app_title'),
+      home: const MainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.map),
-                  text: 'maps_tab',
-                ),
-                Tab(
-                  icon: Icon(Icons.list_alt),
-                  text: 'My Library',
-                )
-              ],
-            ),
-            title: const Text('My game library'),
-          ),
-          body: TabBarView (
-            children: [
-              const Maps(),
-              MyLibrary()
-            ],
-          ),
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return Login();
   }
 }

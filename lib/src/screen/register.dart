@@ -98,7 +98,7 @@ class Register extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
-                      child: RaisedButton(
+                      child: TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Game game = Game(
@@ -116,7 +116,7 @@ class Register extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
-                      child: RaisedButton(
+                      child: TextButton(
                         onPressed: () {
                           Navigator.pop(context, null);
                         },
