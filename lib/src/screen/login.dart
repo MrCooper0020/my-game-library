@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_city/src/screen/home.dart';
+import 'package:my_city/src/screen/register_account.dart';
 
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
@@ -56,6 +57,14 @@ class Login extends StatelessWidget {
                     }
                   },
                   child: const Text("Log in"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterAccount()));
+                  },
+                  child: const Text("Register"),
                 )
               ],
             )
