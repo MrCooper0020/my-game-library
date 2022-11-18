@@ -11,22 +11,11 @@ Widget getGamesList(Game game, dynamic context, dynamic setState) {
   final localStorage = GetStorage();
   final userEmail = localStorage.read('logged_user_email');
 
-  void deleteGame(id) {
-    FirebaseFirestore.instance.collection("games-$userEmail").doc(id).delete();
-  }
-
-  void getGameDataFromFireStore(String gameTitle) {
-    FirebaseFirestore.instance.collection("games-$userEmail").where('title', isEqualTo: gameTitle).get().then((QuerySnapshot querySnapshot) {
-      final allGames = querySnapshot.docs.map((doc) => doc.data()).toList();
-      print(querySnapshot);
-
-      for(var i = 0; i < allGames.length; i++){
-        dynamic game = allGames[i];
-
-        if(game['title'] == gameTitle){
-          deleteGame(game['id']);
-        }
-      }
+  void deleteFromFireStore(String gameTitle) {
+    FirebaseFirestore.instance.collection("games-$userEmail").where("title", isEqualTo: gameTitle).get().then((QuerySnapshot querySnapshot){
+      FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
+        myTransaction.delete(FirebaseFirestore.instance.collection("games-$userEmail").doc(querySnapshot.docs.first.id));
+      });
     });
   }
 
@@ -45,7 +34,7 @@ Widget getGamesList(Game game, dynamic context, dynamic setState) {
           var gameDao = database.gameDao;
           gameDao.deleteGame(game);
 
-          //getGameDataFromFireStore(game.title);
+          deleteFromFireStore(game.title);
 
           setState(() {});
         },

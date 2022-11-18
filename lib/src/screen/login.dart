@@ -13,7 +13,7 @@ class Login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final LoginController c = Get.put(LoginController());
+  final LoginController controller = Get.put(LoginController());
 
   void showNotification(context, String message){
     ScaffoldMessenger.of(context).showSnackBar(

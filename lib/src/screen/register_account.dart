@@ -10,7 +10,7 @@ class RegisterAccountController extends GetxController{}
 class RegisterAccount extends StatelessWidget {
   RegisterAccount({Key? key}) : super(key: key);
 
-  final RegisterAccountController c = Get.put(RegisterAccountController());
+  final RegisterAccountController controller = Get.put(RegisterAccountController());
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
