@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'login.dart';
 import 'start.dart';
 import 'my_library.dart';
 import 'settings.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePageController extends GetxController{
+  var selectedIndex = 0.obs;
 
-  @override
-  State<HomePage> createState() => _HomeState();
+  void changeSelectedTab(index) => selectedIndex.value = index;
 }
 
-class _HomeState extends State<HomePage> {
-  int _selectedIndex = 0;
+class HomePageBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<HomePageController>(() => HomePageController());
+  }
+}
+
+class HomePage extends GetView<HomePageController> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _screens = <Widget>[
-    const Start(),
+    Start(),
     MyLibrary(),
-    const Settings()
+    Settings()
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +37,19 @@ class _HomeState extends State<HomePage> {
                 icon: const Icon(Icons.outbond),
                 tooltip: 'Log out',
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                  final localStorage = GetStorage();
+
+                  localStorage.remove('logged_user_email');
+                  Get.offAll(Login());
                 },
               ),
             ],
             title: const Text('My game library'),
           ),
-          body: Center(
-            child: _screens.elementAt(_selectedIndex),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
+          body: Obx(() => Center(
+            child: _screens.elementAt(controller.selectedIndex.value),
+          )),
+          bottomNavigationBar: Obx(() => BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
@@ -60,10 +64,10 @@ class _HomeState extends State<HomePage> {
                 label: 'Config',
               ),
             ],
-            currentIndex: _selectedIndex,
+            currentIndex: controller.selectedIndex.value,
             selectedItemColor: Colors.blue,
-            onTap: _onItemTapped,
-          )
+            onTap: controller.changeSelectedTab,
+          ))
         );
   }
 }

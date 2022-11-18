@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_city/src/screen/register_game.dart';
 import 'package:my_city/src/widget/library_list.dart';
+import 'package:get/get.dart';
 
 import '../data/database/app_database.dart';
 import '../data/model/game.dart';
 import '../data/dao/game_dao.dart';
+
+class MyLibraryController extends GetxController{}
 
 class MyLibrary extends StatefulWidget {
   @override
@@ -55,8 +58,6 @@ class _MyLibraryState extends State<MyLibrary> {
   Widget build(BuildContext context) {
 
     loadDB(); // to make delete button works
-
-
 
     return Scaffold(
       body: ListView(

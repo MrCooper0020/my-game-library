@@ -1,9 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../data/model/game.dart';
 
+class RegisterGameController extends GetxController{}
+
 class RegisterGame extends StatelessWidget {
   RegisterGame({Key? key}) : super(key: key);
+
+  final RegisterGameController c = Get.put(RegisterGameController());
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
@@ -105,7 +112,20 @@ class RegisterGame extends StatelessWidget {
                                   int.parse(_yearController.text),
                                   _imageController.text
                               );
-                              Navigator.pop(context, game);
+                              final localStorage = GetStorage();
+                              final userEmail = localStorage.read('logged_user_email');
+
+                              // create a unique game collection for each user
+                              FirebaseFirestore.instance.collection("games-$userEmail").add({
+                                "title": _titleController.text,
+                                "description": _descriptionController.text,
+                                "image_link": _imageController.text,
+                                "user_rating": int.parse(_ratingController.text),
+                                "year": int.parse(_yearController.text)
+                              }).then((DocumentReference doc) =>
+                                  //Get.back();
+                                  Navigator.pop(context, game)
+                              );
                             }
                           },
                           child: const Text('Save'),

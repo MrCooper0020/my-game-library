@@ -1,8 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class RegisterAccountController extends GetxController{}
 
 class RegisterAccount extends StatelessWidget {
   RegisterAccount({Key? key}) : super(key: key);
+
+  final RegisterAccountController c = Get.put(RegisterAccountController());
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
@@ -10,6 +18,14 @@ class RegisterAccount extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  void showNotification(context, String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(message)
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,19 +85,25 @@ class RegisterAccount extends StatelessWidget {
                           },
                         ),
                         TextFormField(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
                           decoration: const InputDecoration(
                               hintText: "Password",
                               labelText: "Password"
                           ),
                           controller: _passwordController,
                           validator: (value) {
-                            if (value!.isEmpty || int.parse(value) <= 1800 || value.length != 4) {
+                            if (value!.isEmpty) {
                               return 'Please, password is required!';
                             }
                             return null;
                           },
                         ),
                         TextFormField(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
                           decoration: const InputDecoration(
                               hintText: "Confirm password",
                               labelText: "Confirm password"
@@ -91,7 +113,7 @@ class RegisterAccount extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'Please, confirm password is required!';
                             } else {
-                              if(value != _passwordController.value){
+                              if(value != _passwordController.text){
                                 return 'Confirm password have to the same as password';
                               }
                             }
@@ -102,9 +124,31 @@ class RegisterAccount extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 16.0),
                           child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                // TODO: save account in firebase
+                                try {
+                                  FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: (_passwordController.text).toString(),
+                                  ).then((response){
+                                    final localStorage = GetStorage();
+                                    final userEmail = localStorage.read('logged_user_email');
+
+                                    // Save additional data about new account
+                                    FirebaseFirestore.instance.collection("additional-data-$userEmail").add({
+                                      "firstName": _firstNameController.text,
+                                      "lastName": _lastnameController.text
+                                    }).then((DocumentReference doc) => Get.offAll(Login()));
+                                  });
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'weak-password') {
+                                    showNotification(context, 'The password provided is too weak.');
+                                  } else if (e.code == 'email-already-in-use') {
+                                    showNotification(context, 'The account already exists for that email.');
+                                  }
+                                } catch (e) {
+                                  showNotification(context, "Something wrong happened!");
+                                }
                               }
                             },
                             child: const Text('Create account'),
@@ -114,7 +158,7 @@ class RegisterAccount extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 16.0),
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                              Get.offAll(Login());
                             },
                             child: const Text('Cancel'),
                           ),
