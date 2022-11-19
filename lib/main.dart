@@ -1,70 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:my_city/src/screen/maps.dart';
-import 'package:my_city/src/screen/my_library.dart';
-import 'src/screen/maps.dart';
-import 'src/screen/my_library.dart';
+import 'package:my_city/src/screen/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // initialize getx localstorage
+  await GetStorage.init();
+
+  // initialize firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'app_title',
+    return GetMaterialApp(
+      title: 'my_game_library',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'app_title'),
+      home: const MainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.map),
-                  text: 'maps_tab',
-                ),
-                Tab(
-                  icon: Icon(Icons.list_alt),
-                  text: 'My Library',
-                )
-              ],
-            ),
-            title: const Text('My game library'),
-          ),
-          body: TabBarView (
-            children: [
-              const Maps(),
-              MyLibrary()
-            ],
-          ),
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return Login();
   }
 }

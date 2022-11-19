@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import '../data/model/game.dart';
+import 'package:get/get.dart';
+
+class GameDetailsController extends GetxController{}
 
 class GameDetails extends StatelessWidget {
   final Game game;
-  const GameDetails({Key? key, required this.game}) : super(key: key);
+  GameDetails({Key? key, required this.game}) : super(key: key);
   static const noImageLink = "https://media.istockphoto.com/vectors/default-image-icon-vector-missing-picture-page-for-website-design-or-vector-id1357365823?k=20&m=1357365823&s=612x612&w=0&h=ZH0MQpeUoSHM3G2AWzc8KkGYRg4uP_kuu0Za8GFxdFc=";
+  final GameDetailsController controller = Get.put(GameDetailsController());
 
   @override
   Widget build(BuildContext context) {
