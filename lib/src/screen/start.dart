@@ -31,7 +31,7 @@ class StartController extends GetxController{
 
   void getGamesRecommendation(context){
     Map<String, String> headerParams = {
-      'X-RapidAPI-Key': '0144ec75c8mshb800159916ce5cap10216ajsn151e8d5dda9c',
+      'X-RapidAPI-Key': '',
       'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
     };
     var url = Uri.https('opencritic-api.p.rapidapi.com', '/game');
